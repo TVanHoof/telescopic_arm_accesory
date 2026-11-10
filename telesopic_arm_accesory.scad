@@ -327,3 +327,13 @@ translate([0, -24, 150])
 
 translate([0,0,200])
   accessory_mount();
+
+//explode
+//translate([0,100,0])
+//  pole_piece();
+//
+//translate([0,150,0])
+//  mounting_piece();
+//
+//translate([0,300,0])
+//  accessory_mount();
