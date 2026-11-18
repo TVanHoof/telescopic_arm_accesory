@@ -1,4 +1,5 @@
 use <dovetail_joint.scad>
+use <accesory_base.scad>
 
 module accessory_mount(
   width = 150,
@@ -13,25 +14,8 @@ module accessory_mount(
 ) {
   translate([0,0,thickness / 2]){
     difference() {
-      cube([width, length, thickness], center = true);
-
-      for (x = [-1,1], y = [-1,1]) {
-        translate([
-          x * (width/2 - 8),
-          y * (length/2 - 8),
-          0
-        ])
-          cylinder(
-            h = thickness + 1,
-            d = hole_diameter,
-            center = true
-          );
-      }
-
-      cylinder(h = thickness + 1, r = 6, center = true);
-
-      translate([0,0,-thickness / 2])
-        cylinder(h = thickness, r = 10, center = true, $fn=6);
+      rotate([180,0,0])
+        accesory_base();
 
       // dovetail slots in the bottom face (mating plane = z = -thickness / 2)
       for (x = [-1, 1])
