@@ -4,6 +4,9 @@ use <accesory_mount.scad>
 
 use <accesories/clamp.scad>
 
+// ["assembly", "exploded", "all"]
+view = "all";
+
 $fn=500;
 
 module base(){
@@ -19,26 +22,21 @@ translate([0,0,200])
   accessory_mount();
 }
 
-base();
+if(view == "assembly" || view == "all"){
+  base();
 
-for (x = [-1, 1])
-  translate([x * 50, 0, 230])
-    clamp();
+  for (x = [-1, 1])
+    translate([x * 50, 0, 230]) clamp();
 
-translate([0,0,260])
-  clamp_adapter();
+  translate([0,0,260]) clamp_adapter();
+}
 
-//explode
+if (view == "exploded" || view == "all")
 {
-translate([0,100,0])
-  pole_connection();
-
-translate([0,150,0])
-  base_mount();
-
-translate([0,300,0])
-  accessory_mount();
-
-translate([0,400,0])
-  clamp();
+  offset = view == "all" ? 100 : 0;
+translate([0,offset,0]) pole_connection();
+translate([0,offset+50,0]) base_mount();
+translate([0,offset+200,0]) accessory_mount();
+translate([0,offset+300,0]) clamp();
+translate([0,offset+375,0]) clamp_adapter();
 }
