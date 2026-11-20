@@ -37,9 +37,10 @@ if(view == "assembly" || view == "all"){
 if (view == "exploded" || view == "all")
 {
   offset = view == "all" ? 100 : 0;
-translate([0,offset,0]) pole_connection();
-translate([0,offset+50,0]) base_mount();
-translate([0,offset+200,0]) accessory_mount();
-translate([0,offset+300,0]) clamp();
+translate([0,offset,0]) pole_connection(with_insert=false);
+translate([0,offset+50,-47]) latch_insert();
+translate([0,offset+100,0]) base_mount();
+translate([0,offset+220,0]) accessory_mount();
+translate([0,offset+310,0]) clamp();
 translate([0,offset+375,0]) clamp_adapter();
 }

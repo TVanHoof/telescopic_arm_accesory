@@ -77,7 +77,7 @@ module latch_insert(
     button_z = 50,
     bridge_z = 95,
     button_protrusion = 4,
-    button_clearance = 0.1,
+    button_clearance = 0.5,
     arm_width = 8,
     arm_thickness = 2,
     arm_top_y = 4,
@@ -118,7 +118,7 @@ module latch_insert(
 }
 
 // connection of the arm to the rest
-module pole_connection() {
+module pole_connection(with_insert = true) {
   base_diam = 28.5;
   h_connection = 100;
   wall = 3;
@@ -134,12 +134,13 @@ module pole_connection() {
         flange_radius = 22,
         bolt_diam = 8);
 
-  latch_insert(
-    tube_outer_d = base_diam,
-    tube_thickness = wall,
-    guide_hole_d = hole_diam,
-    button_z = h_connection / 2,
-    bridge_z = h_connection - 5
-  );
+  if(with_insert)
+    latch_insert(
+        tube_outer_d = base_diam,
+        tube_thickness = wall,
+        guide_hole_d = hole_diam,
+        button_z = h_connection / 2,
+        bridge_z = h_connection - 5
+        );
 }
 
