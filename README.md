@@ -10,7 +10,7 @@ the complete rig and can also lay them out as an exploded view.
 | File | Contents |
 | --- | --- |
 | `telesopic_arm_accesory.scad` | Top-level assembly and exploded layout. |
-| `pole_connection.scad` | Sleeve and handle that connect to the pole; uses the indexed joint. |
+| `pole_connection.scad` | Sleeve and handle that connect to the pole; includes the printed spring-button insert and uses the indexed joint. |
 | `base_mount.scad` | Bracket that saddles the hub, with male dovetail ribs. |
 | `accesory_mount.scad` | Plate with female dovetail slots that slides onto the base mount. |
 | `accesory_base.scad` | Flat mounting plate with corner holes and a central boss. |
@@ -20,6 +20,20 @@ the complete rig and can also lay them out as an exploded view.
 
 Dependencies are declared with `use <...>`, so the library files contribute
 modules only; their top-level geometry is not drawn.
+
+## Spring-button insert
+
+`latch_insert()` in `pole_connection.scad` is a separate printed part that drops
+into the bore of `mounting_base()`. Two angled arms are joined by a bridge near
+the handle (z = 95 mm) and carry a button on each arm at the existing Ø6 guide
+hole (z = 50 mm). The buttons are symmetric: Ø5.9 stems with a chamfered
+shoulder and rounded tip, protruding 4 mm past the tube on each side (36.5 mm
+tip to tip). Squeezing both buttons flexes the arms so the tube can slide;
+releasing them lets the buttons lock into the holes of the outer telescopic
+tube.
+
+Print the insert in a flexible material such as PETG or nylon. It is included
+in `pole_connection()`, so it appears in both the assembly and exploded views.
 
 ## Selecting what to render
 

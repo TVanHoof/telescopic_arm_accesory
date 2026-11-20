@@ -51,18 +51,95 @@ module mounting_base(height, outer_diam, thickness, hole_diam, center = false) {
   }
 }
 
+// One printed button: cylindrical stem, chamfered shoulder and a rounded tip.
+// Built along +Z from the attachment plane so it can be rotated onto ±Y.
+module latch_button(length, stem_d, tip_d, chamfer_length, dome_height) {
+  stem_r = stem_d / 2;
+  tip_r = tip_d / 2;
+  stem_len = length - chamfer_length - dome_height;
+
+  cylinder(h = stem_len, r = stem_r);
+  translate([0, 0, stem_len])
+    cylinder(h = chamfer_length, r1 = stem_r, r2 = tip_r);
+  translate([0, 0, length - dome_height])
+    scale([1, 1, dome_height / tip_r])
+      sphere(r = tip_r, $fn = 32);
+}
+
+// Separate printed spring insert. Two angled arms are joined near the handle;
+// their buttons pass through the guide hole in mounting_base and lock into the
+// holes of the outer telescopic tube. Squeezing the buttons flexes the arms so
+// the insert can slide.
+module latch_insert(
+    tube_outer_d = 28.5,
+    tube_thickness = 3,
+    guide_hole_d = 6,
+    button_z = 50,
+    bridge_z = 95,
+    button_protrusion = 4,
+    button_clearance = 0.1,
+    arm_width = 8,
+    arm_thickness = 2,
+    arm_top_y = 4,
+    chamfer_length = 0.5,
+    dome_height = 1
+) {
+  outer_r = tube_outer_d / 2;
+  inner_r = outer_r - tube_thickness;
+  overlap = 0.5;
+  button_start_y = inner_r - overlap;
+  button_len = outer_r + button_protrusion - button_start_y;
+  stem_d = guide_hole_d - button_clearance;
+  tip_d = stem_d - 0.5;
+  arm_tip_y = inner_r - arm_thickness / 2;
+
+  // bridge joining the two arms near the handle end of the tube
+  translate([0, 0, bridge_z])
+    cube([arm_width, 2 * arm_top_y + arm_thickness, arm_thickness], center = true);
+
+  for (side = [-1, 1]) {
+    hull() {
+      translate([0, side * arm_top_y, bridge_z])
+        cube([arm_width, arm_thickness, arm_thickness], center = true);
+      translate([0, side * arm_tip_y, button_z])
+        cube([arm_width, arm_thickness, arm_thickness], center = true);
+    }
+
+    translate([0, side * button_start_y, button_z])
+      rotate([side == 1 ? -90 : 90, 0, 0])
+        latch_button(
+          length = button_len,
+          stem_d = stem_d,
+          tip_d = tip_d,
+          chamfer_length = chamfer_length,
+          dome_height = dome_height
+        );
+  }
+}
+
 // connection of the arm to the rest
 module pole_connection() {
-  base_diam = 30;
+  base_diam = 28.5;
   h_connection = 100;
+  wall = 3;
+  hole_diam = 6;
+
   mounting_base(height = h_connection,
          outer_diam = base_diam,
-         thickness = 5,
-         hole_diam = 6,
+         thickness = wall,
+         hole_diam = hole_diam,
          center = false);
   translate([0, 0, h_connection])
     handle(base_diam = base_diam,
         flange_radius = 22,
         bolt_diam = 8);
+
+  latch_insert(
+    tube_outer_d = base_diam,
+    tube_thickness = wall,
+    guide_hole_d = hole_diam,
+    button_z = h_connection / 2,
+    bridge_z = h_connection - 5
+  );
 }
 
