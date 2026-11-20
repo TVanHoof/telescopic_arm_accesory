@@ -1,7 +1,7 @@
 module accesory_base(
   width = 150,
   length = 100,
-  thickness = 20,
+  thickness = 30,
   hole_diameter = 5
   ){
   difference(){

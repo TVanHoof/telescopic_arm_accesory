@@ -1,20 +1,12 @@
-use <../accesory_base.scad>
+use <../dovetail_joint.scad>
 
-module clamp() {
-  h = 20;
-  w = 150;
-  l = 100;
-
-  //base plate
-  translate([0,0,h/2])
-  accesory_base();
-
-  //mounting mechanism
+module clamp(
+  slit_w = 2,
+  ear_width = 20,
+  ear_height = 20) {
   s = 50;
-  bore_d = s * 0.75;        // 37.5 - fixed interface for clamp_adapter()
-  slit_w = 4;               // opening of the split collars
-  ear_width = 16;           // ear width per side, along Y
-  ear_height = 12;          // ear height above the block top
+  height = 60;
+  bore_d = s * 0.75;
   screw_d = 8;              // M8 thumb screws
   screw_hole_d = screw_d + 0.5;
   screw_x = [-12, 12];      // two screws per collar, spaced along X
@@ -22,81 +14,66 @@ module clamp() {
   nut_t = 6.5;              // M8 nut thickness
   washer_d = 16;
   washer_depth = 1.5;
-
+  translate([0,0,height/2])
   difference(){
     union(){
-      for (x = [-1,1]){
-        translate([x * (w - s)/2,0,h + s/2]){
-          union(){
-            cube([s, s, s], center = true);
+      // main mass
+      cube([s, s, height], center = true);
+      // ears to clamp
+      translate([0,0,height/2 + ear_height / 2])
+        cube([s,2* ear_width + slit_w, ear_height], center = true);
+    }
+    // central hole to actually clamp
+    rotate([0,90,0])
+      cylinder(d = bore_d, h = s + 1, center = true);
+    // split on top
+    translate([0,0,height/2])
+      cube([s+ 1,slit_w,s], center = true);
 
-            // ears on both sides of the slit, above the block
-            for (y = [-1,1]){
-              translate([
+    translate([0,0,bore_d/2 - 2])
+      rotate([0,90,0])
+        cylinder(d = slit_w + 3, h = s+1, center = true);
+
+    for (x = [-s/4, s/4]){
+      translate([x, 0, height/2 + ear_height / 2]){
+        rotate([90,0,0]){
+          // screw hole
+          cylinder(
+              h = 2 * (slit_w / 2 + ear_width + 2),
+              d = 8.5,
+              center = true
+            );
+
+            // captive nut on the -Y ear
+            translate([
                   0,
-                  y * (slit_w/2 + ear_width/2),
-                  s/2 + ear_height/2
-              ])
-                cube([s, ear_width, ear_height], center = true);
-            }
+                  0,
+                  slit_w/2 + ear_width - washer_depth])
+              cylinder(
+                h = nut_t + 0.5,
+                r = nut_AF / sqrt(3),
+                center = true,
+                $fn = 6
+              );
+
+            // washer on the +Y ear
+            translate([
+                  0,
+                  0,
+                  -slit_w/2 - ear_width + washer_depth/2])
+              cylinder(
+                h = washer_depth + 0.2,
+                d = washer_d,
+                center = true
+              );
           }
         }
-      }
-    }
-
-    // horizontal bore through both collars
-    translate([0,0,h+s/2])
-      rotate([0,90,0])
-        cylinder(d = bore_d, h = w + 1, center = true);
-
-    // slit and screw hardware for each collar
-    for (x = [-1,1]){
-      translate([x * (w - s)/2,0,h + s/2]){
-
-        // slit from the bore up through the ears
-        translate([0, 0, (s/2 + ear_height + 1)/2])
-          cube([s + 2, slit_w, s/2 + ear_height + 1], center = true);
-
-        for (dx = screw_x){
-          // clearance through both ears
-          translate([dx, 0, s/2 + ear_height/2])
-            rotate([90,0,0])
-              cylinder(
-                  h = 2 * (slit_w/2 + ear_width) + 2,
-                  d = screw_hole_d,
-                  center = true
-              );
-
-          // captive nut on the -Y ear
-          translate([
-              dx,
-              -(slit_w/2 + ear_width) + nut_t/2,
-              s/2 + ear_height/2
-          ])
-            rotate([90,0,0])
-              cylinder(
-                  h = nut_t + 0.5,
-                  r = nut_AF / sqrt(3),
-                  center = true,
-                  $fn = 6
-              );
-
-          // washer seat on the +Y ear
-          translate([
-              dx,
-              (slit_w/2 + ear_width) - washer_depth/2,
-              s/2 + ear_height/2
-          ])
-            rotate([90,0,0])
-              cylinder(
-                  h = washer_depth + 0.2,
-                  d = washer_d,
-                  center = true
-              );
-        }
-      }
     }
   }
+  rotate([0,180,90])
+  dovetail_joint(
+    type = "male",
+    length = s);
 }
 
 // Split adapter sleeve for mounting a smaller shaft in the 37.5 mm bore.

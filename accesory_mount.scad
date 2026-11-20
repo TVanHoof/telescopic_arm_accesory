@@ -4,7 +4,7 @@ use <accesory_base.scad>
 module accessory_mount(
   width = 150,
   length = 100,
-  thickness = 20,
+  thickness = 30,
   hole_diameter = 5,
   dovetail_offset = 40,          // lateral distance of the slots from the centre
   dovetail_height = 8,
@@ -18,7 +18,7 @@ module accessory_mount(
         accesory_base();
 
       // dovetail slots in the bottom face (mating plane = z = -thickness / 2)
-      for (x = [-1, 1])
+      for (x = [-1, 1]){
         translate([
           x * dovetail_offset,
           0,
@@ -32,6 +32,12 @@ module accessory_mount(
             tip_width  = dovetail_tip_width,
             clearance  = dovetail_clearance
           );
+        translate([x * length / 2, 0, thickness / 2])
+          rotate([180,0,90])
+            dovetail_joint(
+              type = "female",
+              length = length / 2 + 0.01);
+      }
     }
   }
 }
