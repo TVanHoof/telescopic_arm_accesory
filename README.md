@@ -21,19 +21,35 @@ the complete rig and can also lay them out as an exploded view.
 Dependencies are declared with `use <...>`, so the library files contribute
 modules only; their top-level geometry is not drawn.
 
-## Spring-button insert
+## External hardware
 
-`latch_insert()` in `pole_connection.scad` is a separate printed part that drops
-into the bore of `mounting_base()`. Two angled arms are joined by a bridge near
-the handle (z = 95 mm) and carry a button on each arm at the existing Ø6 guide
-hole (z = 50 mm). The buttons are symmetric: Ø5.9 stems with a chamfered
-shoulder and rounded tip, protruding 4 mm past the tube on each side (36.5 mm
-tip to tip). Squeezing both buttons flexes the arms so the tube can slide;
-releasing them lets the buttons lock into the holes of the outer telescopic
-tube.
+Counts are for the full `view="assembly"` build.
 
-Print the insert in a flexible material such as PETG or nylon. It is included
-in `pole_connection()`, so it appears in both the assembly and exploded views.
+| Location | Hardware | Qty | Notes |
+| --- | --- | --- | --- |
+| Handle ↔ two base mounts (indexed joints) | M8 through-bolt, ~55–60 mm | 1 | The handle has one continuous Ø8 cross-hole, so a single bolt clamps both base mounts. All joint holes are plain, not tapped. Two shorter M8 bolts can be used instead. |
+| Handle ↔ two base mounts | M8 nut + washers | 1 / 2 | Washers are recommended against the printed flanges. |
+| Clamps (two per assembly) | M8 thumb screws, ~55 mm | 4 | Two per clamp; screw holes are Ø8.5. |
+| Clamps | M8 hex nuts, 13 mm across flats, 6.5 mm thick | 4 | Sit in the printed captive pockets. |
+| Clamps | M8 washers, OD 16 mm, ~1.5 mm thick | 4 | Sit in the printed recesses. |
+| Clamp adapter | M4 thumb/set screw, ~25–30 mm | 1 | The tip bears on the shaft; no nut is needed. |
+| Accessory mount top plate (when fitting an accessory) | M5 bolts + nuts | 4 / 4 | Through the four corner holes; length depends on the accessory thickness. |
+| Accessory mount centre (when fitting an accessory) | M6 bolt + nut | 1 / 1 | See the fit note below. |
+
+Non-fastener external parts:
+
+- The outer telescopic arm tube with the ~Ø6 locking holes that the printed
+  spring-button insert snaps into.
+- The accessory shaft, Ø30 mm by default for `clamp_adapter()`.
+- The accessory itself, bolted to the top plate.
+
+No hardware is needed for the dovetail joints or for the spring-button insert.
+
+**Fit note:** the central hole in `accesory_base.scad` is Ø6, which is a snug fit
+for an M6 shank, and the hex recess is about 8.66 mm across flats — too small
+for a standard M6 nut (10 mm across flats). For a clearance fit with a captive
+M6 nut, open the hole to Ø6.6 and the hex to about Ø11.55. The corner Ø5 holes
+are likewise tight for M5 bolts; Ø5.5 gives normal clearance.
 
 ## Selecting what to render
 

@@ -27,9 +27,9 @@ module accesory_base(
             );
     }
 
-    cylinder(h = thickness + 1, r = 6, center = true);
+    cylinder(h = thickness + 1, d = 6, center = true);
 
     translate([0,0,thickness / 2])
-      cylinder(h = thickness, r = 10, center = true, $fn=6);
+      cylinder(h = thickness, d = 10, center = true, $fn=6);
   }
 }
