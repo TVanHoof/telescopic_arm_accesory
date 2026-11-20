@@ -1,5 +1,9 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Thomas Van Hoof
+
 use <indexed_joint.scad>
 
+// handle to connect mounting_base to accessory_mount with 2 indexed joints
 module handle(base_diam, flange_radius, bolt_diam) {
   difference(){
     union(){
@@ -34,6 +38,7 @@ module handle(base_diam, flange_radius, bolt_diam) {
   }
 }
 
+//tube that should go inside of the telescopic arm
 module mounting_base(height, outer_diam, thickness, hole_diam, center = false) {
   translate([0,0, center ? 0 : height / 2]){
     difference(){
@@ -46,6 +51,7 @@ module mounting_base(height, outer_diam, thickness, hole_diam, center = false) {
   }
 }
 
+// connection of the arm to the rest
 module pole_connection() {
   base_diam = 30;
   h_connection = 100;

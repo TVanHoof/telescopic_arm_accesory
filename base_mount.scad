@@ -1,6 +1,11 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Thomas Van Hoof
+
 use <dovetail_joint.scad>
 use <indexed_joint.scad>
 
+//connection between pole_connection and accesory_mount
+//allowing different angles
 module base_mount(
   bracket_width  = 120,        // lateral size of the bracket
   bracket_depth  = 8,          // size along the arm axis (must stay clear of the male flange)

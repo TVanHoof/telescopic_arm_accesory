@@ -1,3 +1,31 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Thomas Van Hoof
+
+// ============================================================================
+//  Indexed joint - ONE module for both halves.
+//
+//  indexed_joint_half("male")   = flange with a 12-sided boss and 24 radial
+//                                 teeth standing on its mating face.
+//  indexed_joint_half("female") = matching flange with a 12-sided socket and
+//                                 24 radial grooves cut into its mating face.
+//
+//  Canonical frame (shared by both halves):
+//    Z = joint axis. The flange base sits at z = 0; its mating face is the
+//        upper surface (z = flange_thickness, 0.05 mm less for the female).
+//        Male features grow upwards from that face, female features are cut
+//        downwards into it.
+//    X/Y = plane of the flange, centred on the bolt hole.
+//
+//  Assembly: flip one half 180 degrees and bring the two mating faces
+//  together. The male boss enters the female socket, the male teeth engage
+//  the female grooves, and the two central holes line up for an M8 bolt.
+//  The 12-sided boss/socket allows rotation in 30 degree steps; the teeth
+//  and grooves themselves are spaced every 15 degrees.
+//
+//  Fits: socket radius is 0.25 mm larger than the boss radius, female
+//  grooves are 0.15 mm wider and 0.01 mm deeper than the male teeth, and
+//  the female flange is 0.05 mm thinner than the male one.
+// ============================================================================
 module indexed_joint_half(type = "male") {
 
   // Joint parameters

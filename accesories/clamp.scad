@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Thomas Van Hoof
+
 use <../dovetail_joint.scad>
 
 module clamp(
